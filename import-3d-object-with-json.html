@@ -9,7 +9,7 @@
 	<script src="js/TrackballControls.js"></script>
 	<script src="js/DDSLoader.js"></script>
 	<script>
-	var control,camera,scene,renderer,width,height,asalogo,degree,loader,logo,asalogo;
+	var control,camera,scene,renderer,width,height,spacebomber,degree,loader,logo;
 	width=window.innerWidth;
 	height=window.innerHeight;
 	degree=Math.PI/180;	
@@ -30,12 +30,12 @@
 		light2.position.set(0,0,-100);
 		loader=new THREE.JSONLoader();
 		logo=function(object){
-			asalogo=new THREE.Mesh(
+			spacebomber=new THREE.Mesh(
 				object,new THREE.MeshLambertMaterial({color:"red",wireframe:false})
 			);
-			asalogo.position.set(0,0,0);
-			asalogo.scale.set(3,3,3);
-			scene.add(asalogo);
+			spacebomber.position.set(0,0,0);
+			spacebomber.scale.set(3,3,3);
+			scene.add(spacebomber);
 			renderer.render(scene,camera);
 		}
 		loader.load("spacebomber.json",logo);
