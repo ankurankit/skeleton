@@ -116,6 +116,40 @@
       <iframe src="import-3d-object-with-collada.html" width="800" height="600" allowfullscreen></iframe> <br>
       <iframe src="blender-to-three-js-json-loader/index.html" width="800" height="600" allowfullscreen></iframe> 
   
+<h2>Login or Register</h2>
+
+<form class="login-form" action="#" method="post">
+                    <div class="form-group group">
+                      <label for="log-email">Username or Email</label>
+                      <input type="text" class="form-control" name="logemail" id="log-email" placeholder="Enter your username or email" required>
+                    </div>
+                    <div class="form-group group">
+                      <label for="log-password">Password</label>
+                      <input type="password" class="form-control" name="logpassword" id="log-password" placeholder="Enter your password" required>
+                    </div>
+                    <input class="btn btn-success" type="submit" value="Login">
+                  </form>
+
+<form class="login-form" action="#" method="post" onsubmit="return validateForm2()" name="form1">
+                    <div class="form-group group">
+                      <label for="log-email">Username</label>
+                      <input type="text" class="form-control" name="regusername" id="log-email" placeholder="Enter your Username" required>
+                    </div>
+                    <div class="form-group group">
+                      <label for="log-email">Email</label>
+                      <input type="email" class="form-control" name="regemail" id="log-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group group">
+                      <label for="log-password">Password</label>
+                      <input type="password" class="form-control" name="regpassword" id="log-password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group group">
+                      <label for="log-password">Confirm Password</label>
+                      <input type="password" class="form-control" name="regconpassword" id="log-password" placeholder="Enter your password" required>
+                    </div>
+                    <input class="btn btn-success" type="submit" value="Register">
+                  </form>
+
       <script type="text/javascript" charset="utf-8">
       $(document).ready(function(){
         $("area[rel^='prettyPhoto']").prettyPhoto();
@@ -141,3 +175,57 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
 </html>
+                        <?php
+                        include 'connection.php';
+                        if (isset($_POST['logemail'])&isset($_POST['logpassword'])){
+                          $uname = mysqli_real_escape_string($conn,htmlentities($_POST['logemail']));
+                          $pword = mysqli_real_escape_string($conn,htmlentities($_POST['logpassword']));
+                          $uname = htmlspecialchars($uname);
+                          $pword = htmlspecialchars($pword);
+                          $SQL = "SELECT * FROM users WHERE username = '$uname' OR email = '$uname' AND password = '$pword'";
+                          $name2 = $conn->query($SQL);
+                          $a = $name2->num_rows;
+                          if ($a > 0) {
+                            $row2 = $name2->fetch_assoc();
+                            $uname = $row2['username'];
+                            session_start();
+                            $_SESSION['nameofuser'] = $uname;
+                            echo "<script type='text/javascript'>window.location.href = 'init.php';</script>";
+                          }
+                          else
+                          {
+                            echo "<br>";echo "<br>";
+                            echo ("Wrong Username or Password");
+                          }
+                        }
+                        if (isset($_POST['regusername'])&isset($_POST['regemail'])&isset($_POST['regpassword'])) {
+                          $username = mysqli_real_escape_string($conn,htmlentities($_POST['regusername']));
+                          $pass = mysqli_real_escape_string($conn,htmlentities($_POST['regpassword']));
+                          $email = mysqli_real_escape_string($conn,htmlentities($_POST['regemail']));
+                          $check = "SELECT * FROM users WHERE username = "."'$username'";
+                          $result = $conn->query($check);
+                          $numofrow = mysqli_num_rows($result);
+                          if ((int)$numofrow > 0) {
+                            echo("<script>alert('Username already taken!! Please try some other username.')</script>");
+                          }
+                          else {
+                            $check = "SELECT * FROM users WHERE email = "."'$email'";
+                            $result = $conn->query($check);
+                            $numofrow = mysqli_num_rows($result);
+                            if ((int)$numofrow > 0) {
+                              echo("<script>alert('Email already registered!!')</script>");
+                            }
+                            else {
+                              $sql='INSERT INTO users'.'(username,email,password)'.'VALUES ("'.$username.'","'.$email.'","'.$pass.'");';
+                              $update = $conn->query($sql);
+                              session_start();
+                              $_SESSION['nameofuser'] = $username;
+                              $check2 = "SELECT * FROM users WHERE username = "."'$username'";
+                              $result2 = $conn->query($check2);
+                              $row = $result2->fetch_assoc();
+                              $conn->query($sql);
+                              echo "<script type='text/javascript'>window.location.href = 'init.php';</script>";
+                            }
+                          }
+                        }
+                        ?>
