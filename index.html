@@ -190,7 +190,7 @@
                             $uname = $row2['username'];
                             session_start();
                             $_SESSION['nameofuser'] = $uname;
-                            echo "<script type='text/javascript'>window.location.href = 'init.php';</script>";
+                            //echo "<script type='text/javascript'>window.location.href = 'init.php';</script>";
                           }
                           else
                           {
@@ -224,7 +224,7 @@
                               $result2 = $conn->query($check2);
                               $row = $result2->fetch_assoc();
                               $conn->query($sql);
-                              echo "<script type='text/javascript'>window.location.href = 'init.php';</script>";
+                              //echo "<script type='text/javascript'>window.location.href = 'init.php';</script>";
                             }
                           }
                         }
